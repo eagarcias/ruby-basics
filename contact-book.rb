@@ -1,15 +1,16 @@
 require 'csv'
-option = ""  
+option = ""
+# @contacts = []  
 @contacts = [{
     :first_name => 'Erick',
     :last_name => 'Garcia',
-    :email => 'alejo',
-    :phone => '1234'
+    :email => 'egarcia@lomax.com.gt',
+    :phone => '22222222'
 }, {
-    :first_name => 'Alejo',
-    :last_name => 'Garcia',
-    :email => 'eri',
-    :phone => '12345'
+    :first_name => 'Alejandro',
+    :last_name => 'Sarazua',
+    :email => 'asarazua@lomax.com.gt',
+    :phone => '24242424'
 }]
 
 def create_new_contact
@@ -17,13 +18,13 @@ def create_new_contact
     puts "       Crear nuevo contacto"
     puts "------------------------------------\n"
     puts "Ingresar nombre:"
-    first_name = gets.chomp
-    puts "Ingresar apellido:"
-    last_name = gets.chomp
+    first_name = insert_record
+    puts "Ingresar apellido"
+    last_name = insert_record
     puts "Ingresar correo electrónico:"
-    email = gets.chomp
+    email = insert_record
     puts "Ingresar teléfono:"
-    phone = gets.chomp
+    phone = insert_record
     @contacts.push({
         :first_name => first_name,
         :last_name => last_name,
@@ -31,7 +32,17 @@ def create_new_contact
         :phone => phone
     })
     puts "Contacto ingresado correctamente!"
-    puts @contacts[0]
+end
+
+def insert_record
+    loop do
+        input = gets.chomp
+        if input.empty?
+            puts "Este campo no puede ser vacio" 
+        else
+            return input    
+        end
+    end
 end
 
 def update_contact
@@ -58,19 +69,19 @@ def update_contact
             case edit_option
             when "1"
                 puts "Ingresa el nuevo nombre:"
-                @contacts[index][:first_name] = gets.chomp
+                @contacts[index][:first_name] = insert_record
                 puts print_contact @contacts[index]
             when "2"
                 puts "Ingresa el nuevo apellido:"
-                @contacts[index][:last_name] = gets.chomp 
+                @contacts[index][:last_name] = insert_record 
                 puts print_contact @contacts[index]
             when "3"
                 puts "Ingresa el nuevo correo electrónico:"
-                @contacts[index][:email] = gets.chomp
+                @contacts[index][:email] = insert_record
                 puts print_contact @contacts[index]
             when "4"
                 puts "Ingresa el nuevo teléfono:"
-                @contacts[index][:phone] = gets.chomp
+                @contacts[index][:phone] = insert_record
                 puts print_contact @contacts[index]
             else puts "PROCESO CANCELADO"
             end
@@ -140,7 +151,6 @@ end
 def generate_report
     puts "GENERANDO REPORTE.........."
     CSV.open("contacts.csv", "w") do |csv|
-        csv << ["CONTACTOS"]
         csv << ["Nombre", "Apellido", "Correo electrónico", "Telefono"]
         @contacts.each {|c| csv << [c[:first_name], c[:last_name], c[:email], c[:phone]]}
     end
@@ -174,5 +184,3 @@ while option != "6"
         puts "|-------------------------------------------------------------|"
     end    
 end
-
-
